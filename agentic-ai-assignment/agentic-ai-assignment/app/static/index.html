@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Multimodal Processing System</title>
+    <!-- Google Fonts: Outfit & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Panel for Planning, Logs, and Cost Metrics -->
+        <aside class="sidebar-panel">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span>AMPS Console</span>
+                </div>
+                <div class="tagline">Multimodal Processing Core</div>
+            </div>
+
+            <!-- Detected Intent Widget -->
+            <div class="widget-card intent-widget">
+                <div class="widget-title">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <span>Detected Intent</span>
+                </div>
+                <div class="intent-container" id="intent-container">
+                    <div class="empty-state-text">No intent detected yet.</div>
+                </div>
+            </div>
+
+            <!-- Execution Plan Panel -->
+            <div class="widget-card plan-widget">
+                <div class="widget-title">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span>Execution Plan</span>
+                </div>
+                <div class="plan-steps-container" id="plan-steps">
+                    <div class="empty-state-text">No active execution plan yet.</div>
+                </div>
+            </div>
+
+            <!-- Cost Estimator Widget -->
+            <div class="widget-card cost-widget">
+                <div class="cost-info">
+                    <span class="cost-label">Workflow Cost:</span>
+                    <span class="cost-value" id="cost-display">$0.000000</span>
+                </div>
+            </div>
+
+            <!-- Real-time Agent Execution Terminal -->
+            <div class="widget-card logs-widget">
+                <div class="widget-title">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>Agent Execution Logs</span>
+                </div>
+                <div class="terminal-container" id="terminal-logs">
+                    <div class="terminal-line system-msg">[INFO] Ready to accept workflows.</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="stack-text">FastAPI • OCR • Whisper • PyMuPDF • Gemini API</div>
+                <div class="session-meta">Session ID: <span id="session-id-display">None</span></div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Workspace -->
+        <main class="chat-workspace">
+            <header class="workspace-header">
+                <div class="session-info">
+                    <div class="header-titles">
+                        <h1 id="task-title">Agentic Multimodal Processing System</h1>
+                        <p class="subtitle">Upload text, images, PDFs, or audio files for AI-assisted processing and workflow execution.</p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <span class="status-badge" id="status-badge">Idle</span>
+                    <button class="btn btn-secondary" id="new-session-btn" title="Reset Session">
+                        <i class="fa-solid fa-arrows-rotate"></i> Reset
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Message Feed -->
+            <section class="chat-feed" id="chat-feed">
+                <!-- Landing Screen / Welcome View -->
+                <div class="welcome-container" id="welcome-view">
+                    <h2 class="welcome-title">System Core Ready</h2>
+                    <p class="welcome-desc">Awaiting workflow command. Upload an asset or type instructions below to initialize processing.</p>
+                    
+                    <div class="tasks-panel">
+                        <h3 class="tasks-panel-title"><i class="fa-solid fa-cubes"></i> Supported Tasks</h3>
+                        <ul class="tasks-list">
+                            <li><i class="fa-solid fa-file-invoice"></i> OCR & PDF Extraction</li>
+                            <li><i class="fa-solid fa-microphone-lines"></i> Audio Transcription</li>
+                            <li><i class="fa-solid fa-align-left"></i> Summarization</li>
+                            <li><i class="fa-solid fa-chart-simple"></i> Sentiment Analysis</li>
+                            <li><i class="fa-solid fa-code-branch"></i> Code Explanation</li>
+                            <li><i class="fa-brands fa-youtube"></i> YouTube Transcript Extraction</li>
+                        </ul>
+                    </div>
+
+                    <div class="sample-prompts">
+                        <h4>Command Execution Templates:</h4>
+                        <div class="prompts-list">
+                            <button class="prompt-chip" data-prompt="Analyze the sentiment of this: 'I absolutely love this product, it has changed my workflow completely! Highly recommend!'">Sentiment Analysis</button>
+                            <button class="prompt-chip" data-prompt="https://www.youtube.com/watch?v=dQw4w9WgXcQ">YouTube Transcript</button>
+                            <button class="prompt-chip" data-prompt="Explain this Python function:
+def fib(n):
+    if n <= 1: return n
+    return fib(n-1) + fib(n-2)">Explain Code</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Extraction Details Section (Collapsible Accordion) -->
+            <section class="extraction-panel collapsed" id="extraction-panel">
+                <div class="extraction-header" id="extraction-header">
+                    <span class="extraction-title"><i class="fa-solid fa-file-invoice"></i> Extracted File Content (<span id="extracted-file-name">None</span>)</span>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="extraction-content">
+                    <div class="extraction-meta">
+                        <span class="meta-badge" id="extraction-method-badge">Method: N/A</span>
+                        <span class="meta-badge" id="extraction-confidence-badge">Confidence: N/A</span>
+                    </div>
+                    <pre class="extracted-text-view" id="extracted-text-content">No content extracted yet.</pre>
+                </div>
+            </section>
+
+            <!-- Text-Only Final Result Presentation Layer -->
+            <section class="result-panel collapsed" id="result-panel">
+                <div class="result-header">
+                    <span><i class="fa-solid fa-square-poll-horizontal"></i> Final Task Output</span>
+                    <button class="btn-copy" id="copy-result-btn" title="Copy Output"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="result-content markdown-body" id="final-result-content">
+                    Result will appear here.
+                </div>
+            </section>
+
+            <!-- Chat Control Bar (Input Area) -->
+            <footer class="chat-input-panel">
+                <!-- Upload Preview Indicator -->
+                <div class="upload-preview-container" id="upload-preview" style="display: none;">
+                    <div class="upload-preview-card">
+                        <i class="fa-solid fa-file" id="preview-file-icon"></i>
+                        <div class="preview-details">
+                            <span class="preview-name" id="preview-file-name">file.pdf</span>
+                            <span class="preview-size" id="preview-file-size">0 KB</span>
+                        </div>
+                        <button class="preview-remove-btn" id="remove-file-btn"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+
+                <form class="input-form" id="chat-form">
+                    <button type="button" class="btn-icon" id="attach-btn" title="Upload Image, PDF, or Audio">
+                        <i class="fa-solid fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.mp3,.wav,.m4a">
+                    
+                    <textarea class="chat-input" id="chat-textarea" placeholder="Ask a question or upload a file with instructions..." rows="1"></textarea>
+                    
+                    <button type="submit" class="btn-submit" id="send-btn" title="Send Message">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </form>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
